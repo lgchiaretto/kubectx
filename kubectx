@@ -193,6 +193,7 @@ rename_context() {
 delete_contexts() {
   for i in "${@}"; do
     delete_context "${i}"
+    delete_cluster "${i}"
   done
 }
 
@@ -204,6 +205,16 @@ delete_context() {
   fi
   echo "Deleting context \"${ctx}\"..." >&2
   $KUBECTL config delete-context "${ctx}"
+}
+
+delete_cluster() {
+  local ctx
+  ctx="${1}"
+  if [[ "${ctx}" == "." ]]; then
+    ctx="$(current_context)" || exit_err "error getting current context"
+  fi
+  echo "Deleting cluster \"${ctx}\"..." >&2
+  $KUBECTL config delete-cluster "${ctx}"
 }
 
 unset_current_context() {
