@@ -247,7 +247,7 @@ main() {
     delete_contexts "${@:2}"
   elif [[ "${1}" == "-a" ]]; then
     if [[ "$#" -lt 2 ]]; then
-      echo "Kubeconfig file not passed, using /tmp/cluster" >&2
+      echo "Kubeconfig file not passed, using /tmp/kubeconfig" >&2
       if test -f "/tmp/kubeconfig"; then
           add_context "/tmp/kubeconfig"
       else
