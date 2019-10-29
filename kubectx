@@ -245,13 +245,17 @@ main() {
       exit 1
     fi
     delete_contexts "${@:2}"
-    elif [[ "${1}" == "-a" ]]; then
+  elif [[ "${1}" == "-a" ]]; then
     if [[ "$#" -lt 2 ]]; then
-      echo "error: missing new context file" >&2
-      usage
-      exit 1
+      echo "Kubeconfig file not passed, using /tmp/cluster" >&2
+      if test -f "/tmp/kubeconfig"; then
+          add_context "/tmp/kubeconfig"
+      else
+          echo "File /tmp/kubeconfig not found"
+      fi
+    else
+        add_context "${@:2}"
     fi
-    add_context "${@:2}"
   elif [[ "$#" -gt 1 ]]; then
     echo "error: too many arguments" >&2
     usage
